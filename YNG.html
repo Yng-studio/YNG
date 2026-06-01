@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YNG — Timeless Precision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       DESIGN TOKENS
+    ============================================================ */
+    :root {
+      --white:        #FFFFFF;
+      --off-white:    #F8F6F2;
+      --black:        #111111;
+      --mid:          #7A7A7A;
+      --hairline:     #E2DDD6;
+      --gold:         #C8A54B;
+      --gold-light:   #D9BC78;
+      --gold-dark:    #A8852B;
+
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', Helvetica, sans-serif;
+
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --space-xl:  7rem;
+      --space-2xl: 11rem;
+
+      --max-w: 1440px;
+      --gutter: 6vw;
+    }
+
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      background-color: var(--white);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+}
+    a { color: inherit; text-decoration: none; }
+
+    /* ============================================================
+       UTILITY
+    ============================================================ */
+    .gold-rule {
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .label {
+      font-family: var(--font-body);
+      font-size: 0.625rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .overline {
+      font-family: var(--font-body);
+      font-size: 0.6875rem;
+      font-weight: 400;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 2.2rem var(--gutter);
+      mix-blend-mode: normal;
+    }
+
+    .nav--hero {
+      /* Rendered over the dark hero video */
+    }
+
+    .nav__logo {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      color: var(--white);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 2.8rem;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-size: 0.6875rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      font-weight: 400;
+      color: rgba(255,255,255,0.82);
+      transition: color 0.3s;
+    }
+
+    .nav__links a:hover { color: var(--gold-light); }
+
+    .nav__cta {
+      font-size: 0.6875rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.82);
+      border-bottom: 1px solid rgba(200,165,75,0.5);
+      padding-bottom: 2px;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .nav__cta:hover {
+      color: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+
+    /* ============================================================
+       1. HERO
+    ============================================================ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 700px;
+      background-color: #0D0C0A;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Video placeholder rendered as a deep, textured dark field */
+    .hero__video-wrap {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, #1A1610 0%, #0D0C0A 55%, #181410 100%);
+    }
+
+    /* Subtle grain texture via SVG filter */
+    .hero__video-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+      opacity: 0.45;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    /* Vignette */
+    .hero__video-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%,
+        transparent 30%, rgba(0,0,0,0.55) 100%);
+      z-index: 1;
+    }
+    .hero__video-wrap video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    }
+
+    /* Fine horizontal line accent — purely decorative */
+    .hero__line-top,
+    .hero__line-bottom {
+      position: absolute;
+      left: var(--gutter);
+      right: var(--gutter);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(200,165,75,0.35), transparent);
+      z-index: 3;
+    }
+    .hero__line-top    { top: 9.5vh; }
+    .hero__line-bottom { bottom: 9.5vh; }
+
+    .hero__content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.6rem;
+    }
+
+    .hero__eyebrow {
+      font-size: 0.625rem;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--gold);
+      font-weight: 400;
+    }
+
+    .hero__wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(5rem, 13vw, 12rem);
+      font-weight: 500;
+      letter-spacing: 0.38em;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .hero__rule {
+      width: 50px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .hero__tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.12em;
+    }
+
+    .hero__scroll-cue {
+      position: absolute;
+      bottom: 3.5vh;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .hero__scroll-cue span {
+      font-size: 0.5625rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .hero__scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(200,165,75,0.6), transparent);
+    }
+
+    /* ============================================================
+       SECTION SCAFFOLD
+    ============================================================ */
+    section { width: 100%; }
+
+    .section-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    /* ============================================================
+       2. PHILOSOPHY
+    ============================================================ */
+    .philosophy {
+      background: var(--white);
+      padding: var(--space-2xl) 0;
+    }
+
+    .philosophy__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      align-items: center;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .philosophy__image-wrap {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      background: var(--off-white);
+    }
+
+    .philosophy__image-wrap img { object-position: center top; }
+
+    /* Placeholder visual for image */
+    .img-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(145deg, #E8E3D8 0%, #D0C9BA 40%, #C2BAA8 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .img-placeholder::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+
+    .img-placeholder__label {
+      font-size: 0.5625rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(100,90,70,0.45);
+      font-family: var(--font-body);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Taller placeholder variant */
+    .img-placeholder--tall   { aspect-ratio: 2/3; }
+    .img-placeholder--wide   { aspect-ratio: 16/10; }
+    .img-placeholder--square { aspect-ratio: 1/1; }
+    .img-placeholder--cinema { aspect-ratio: 21/9; }
+
+    /* Dark placeholder */
+    .img-placeholder--dark {
+      background: linear-gradient(145deg, #1E1C18 0%, #2A2720 55%, #1A1815 100%);
+    }
+    .img-placeholder--dark .img-placeholder__label { color: rgba(200,165,75,0.35); }
+
+    .philosophy__text {
+      padding-left: 3vw;
+      display: flex;
+      flex-direction: column;
+      gap: 2.2rem;
+    }
+
+    .philosophy__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.5vw, 4.5rem);
+      font-weight: 400;
+      line-height: 1.12;
+      color: var(--black);
+    }
+
+    .philosophy__heading em {
+      font-style: italic;
+      color: var(--gold-dark);
+    }
+
+    .philosophy__body {
+      font-size: 0.875rem;
+      line-height: 1.85;
+      color: var(--mid);
+      max-width: 38ch;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================================
+       3. TIMEPIECES
+    ============================================================ */
+    .timepieces {
+      background: var(--off-white);
+      padding: var(--space-2xl) 0;
+    }
+
+    .collection-header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: var(--space-xl);
+    }
+
+    .collection-header__title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.8vw, 3.8rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+    }
+
+    .collection-header__sub {
+      font-size: 0.8125rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      max-width: 42ch;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    /* Editorial grid: hero image left + 2 portrait stacked right */
+    .watches-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      grid-template-rows: auto;
+      gap: 1.6rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .watches-grid__hero {
+      grid-row: span 2;
+      position: relative;
+    }
+
+    .watches-grid__hero .img-placeholder { aspect-ratio: 3/4; }
+
+    .watches-grid__item {
+      position: relative;
+    }
+
+    .watches-grid__item .img-placeholder { aspect-ratio: 4/3; }
+
+    .watch-caption {
+      padding-top: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .watch-caption__name {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+
+    .watch-caption__detail {
+      font-size: 0.6875rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* ============================================================
+       4. JEWELRY
+    ============================================================ */
+    .jewelry {
+      background: var(--white);
+      padding: var(--space-2xl) 0;
+    }
+
+    .jewelry__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .jewelry__layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-top: var(--space-xl);
+    }
+
+    /* Centre piece dominates */
+    .jewelry__feature {
+      grid-column: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      align-self: start;
+    }
+
+    .jewelry__feature .img-placeholder { aspect-ratio: 2/3; }
+
+    .jewelry__side {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .jewelry__side--top { margin-top: var(--space-lg); }
+    .jewelry__side--bottom { margin-top: calc(-1 * var(--space-md)); }
+
+    .jewelry__side .img-placeholder { aspect-ratio: 3/4; }
+
+    .jewelry__caption {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .jewelry__caption-name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .jewelry__caption-sub {
+      font-size: 0.6875rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+    }
+
+    /* ============================================================
+       5. EYEWEAR
+    ============================================================ */
+    .eyewear {
+      background: var(--black);
+      padding: var(--space-2xl) 0;
+    }
+
+    .eyewear .collection-header__title { color: var(--white); }
+    .eyewear .collection-header__sub   { color: rgba(255,255,255,0.45); }
+    .eyewear .overline                  { color: var(--gold); }
+    .eyewear .gold-rule                 { background: var(--gold); }
+
+    .eyewear-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .eyewear-strip__item { display: flex; flex-direction: column; gap: 1.2rem; }
+    .eyewear-strip__item .img-placeholder--dark { aspect-ratio: 5/4; }
+
+    .eyewear-caption {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .eyewear-caption__name {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--white);
+      font-weight: 500;
+    }
+
+    .eyewear-caption__detail {
+      font-size: 0.625rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(200,165,75,0.65);
+    }
+
+    /* Wide editorial image beneath strip */
+    .eyewear-editorial {
+      max-width: var(--max-w);
+      margin: 4rem auto 0;
+      padding: 0 var(--gutter);
+    }
+
+    .eyewear-editorial .img-placeholder--dark { aspect-ratio: 21/6; }
+
+    /* ============================================================
+       6. CRAFTSMANSHIP
+    ============================================================ */
+    .craftsmanship {
+      background: var(--off-white);
+      padding: var(--space-2xl) 0;
+    }
+
+    .craft__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    /* Large image dominates, text pins to bottom */
+    .craft__image-wrap {
+      position: relative;
+      margin-bottom: var(--space-lg);
+    }
+
+    .craft__image-wrap .img-placeholder { aspect-ratio: 16/7; }
+
+    .craft__text-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 3vw;
+      padding-top: var(--space-md);
+    }
+
+    .craft__pillar { display: flex; flex-direction: column; gap: 1rem; }
+
+    .craft__pillar-num {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      color: var(--gold);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .craft__pillar-heading {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 500;
+    }
+
+    .craft__pillar-body {
+      font-size: 0.8125rem;
+      line-height: 1.8;
+      color: var(--mid);
+    }
+
+    /* ============================================================
+       7. LEGACY
+    ============================================================ */
+    .legacy {
+      background: var(--white);
+      padding: var(--space-2xl) 0;
+    }
+
+    .legacy__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 7vw;
+      align-items: center;
+    }
+
+    .legacy__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--black);
+    }
+
+    .legacy__heading em {
+      font-style: italic;
+      color: var(--gold-dark);
+    }
+
+    .legacy__quote {
+      border-left: 1px solid var(--gold);
+      padding-left: 2rem;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1rem, 1.6vw, 1.35rem);
+      line-height: 1.7;
+      color: var(--mid);
+      margin-top: var(--space-md);
+    }
+
+    .legacy__sub {
+      font-size: 0.8125rem;
+      line-height: 1.85;
+      color: var(--mid);
+      margin-top: var(--space-md);
+    }
+
+    .legacy__image-col {
+      position: relative;
+    }
+
+    .legacy__image-col .img-placeholder { aspect-ratio: 3/4; }
+
+    /* ============================================================
+       8. CONTACT
+    ============================================================ */
+    .contact {
+      background: var(--black);
+      padding: var(--space-2xl) 0 0;
+    }
+
+    .contact__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--gutter);
+    }
+
+    .contact__header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: var(--space-xl);
+    }
+
+    .contact__header .overline { color: var(--gold); }
+
+    .contact__title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      font-weight: 400;
+      color: var(--white);
+    }
+
+    .contact__sub {
+      font-size: 0.8125rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.38);
+      max-width: 36ch;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    /* Minimal form */
+    .contact__form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      max-width: 640px;
+      margin: 0 auto;
+      border: 1px solid rgba(200,165,75,0.18);
+    }
+
+    .form__field {
+      display: flex;
+      flex-direction: column;
+      border-bottom: 1px solid rgba(200,165,75,0.12);
+    }
+
+    .form__field--full { grid-column: span 2; }
+
+    .form__field:not(:last-child) {
+      border-right: 1px solid rgba(200,165,75,0.12);
+    }
+
+    .form__field--full { border-right: none; }
+
+    .form__label {
+      font-size: 0.5625rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 1.4rem 1.6rem 0.4rem;
+    }
+
+    .form__input,
+    .form__textarea {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      font-weight: 300;
+      color: var(--white);
+      padding: 0.4rem 1.6rem 1.4rem;
+      width: 100%;
+      resize: none;
+    }
+
+    .form__input::placeholder,
+    .form__textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+    .form__textarea { min-height: 120px; }
+
+    .form__submit-row {
+      grid-column: span 2;
+      border-top: 1px solid rgba(200,165,75,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .form__submit {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: 0.625rem;
+      font-weight: 500;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 1.6rem;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .form__submit:hover {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--black);
+      padding: var(--space-xl) var(--gutter) var(--space-lg);
+      border-top: 1px solid rgba(200,165,75,0.1);
+      margin-top: var(--space-2xl);
+    }
+
+    .footer__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 4vw;
+      align-items: start;
+    }
+
+    .footer__brand { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .footer__logo {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      color: var(--white);
+    }
+
+    .footer__brand-tagline {
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.3);
+      line-height: 1.7;
+      max-width: 22ch;
+    }
+
+    .footer__col-title {
+      font-size: 0.5625rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .footer__links a {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.06em;
+      transition: color 0.3s;
+    }
+
+    .footer__links a:hover { color: var(--gold-light); }
+
+    .footer__bottom {
+      max-width: var(--max-w);
+      margin: var(--space-lg) auto 0;
+      padding-top: var(--space-md);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer__copy {
+      font-size: 0.625rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+    }
+
+    .footer__legal {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+
+    .footer__legal a {
+      font-size: 0.625rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      transition: color 0.3s;
+    }
+
+    .footer__legal a:hover { color: var(--gold); }
+
+    /* ============================================================
+       DIVIDER — Gold hairline between sections
+    ============================================================ */
+    .section-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    .section-divider--gold {
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.35;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 1024px) {
+      :root {
+        --gutter: 5vw;
+        --space-xl:  5rem;
+        --space-2xl: 8rem;
+      }
+
+      .philosophy__inner   { grid-template-columns: 1fr; gap: 3rem; }
+      .philosophy__text    { padding-left: 0; }
+      .philosophy__image-wrap { max-width: 520px; }
+
+      .jewelry__layout     { grid-template-columns: 1fr 1fr; }
+      .jewelry__feature    { grid-column: 1; grid-row: 1; }
+      .jewelry__side--top  { grid-column: 2; margin-top: 0; }
+      .jewelry__side--bottom { display: none; }
+
+      .craft__text-row     { grid-template-columns: 1fr 1fr; gap: 2rem; }
+
+      .legacy__inner       { grid-template-columns: 1fr; }
+      .legacy__image-col   { max-width: 480px; }
+
+      .footer__inner       { grid-template-columns: 1fr 1fr; gap: 3rem; }
+      .footer__brand       { grid-column: span 2; }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --gutter: 6vw;
+        --space-lg:  3rem;
+        --space-xl:  4.5rem;
+        --space-2xl: 6.5rem;
+      }
+
+      .nav__links { display: none; }
+
+      .watches-grid  { grid-template-columns: 1fr; }
+      .watches-grid__hero { grid-row: auto; }
+
+      .eyewear-strip  { grid-template-columns: 1fr; }
+
+      .jewelry__layout { grid-template-columns: 1fr; }
+      .jewelry__feature { grid-column: 1; }
+      .jewelry__side--top, .jewelry__side--bottom { display: none; }
+
+      .craft__text-row { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+
+      .contact__form { grid-template-columns: 1fr; }
+      .form__field--full   { grid-column: 1; }
+      .form__field:not(:last-child) { border-right: none; }
+      .form__submit-row    { grid-column: 1; }
+
+      .footer__inner  { grid-template-columns: 1fr; }
+      .footer__brand  { grid-column: 1; }
+      .footer__bottom { flex-direction: column; gap: 1.2rem; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .craft__text-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAV
+  ============================================================ -->
+  <nav class="nav--hero">
+    <div class="nav__logo">YNG</div>
+    <ul class="nav__links">
+      <li><a href="#timepieces">Timepieces</a></li>
+      <li><a href="#jewelry">Jewelry</a></li>
+      <li><a href="#eyewear">Eyewear</a></li>
+      <li><a href="#craftsmanship">Craftsmanship</a></li>
+      <li><a href="#legacy">Legacy</a></li>
+    </ul>
+    <a href="#contact" class="nav__cta">Private Enquiry</a>
+  </nav>
+
+  <!-- ============================================================
+       1. HERO
+  ============================================================ -->
+  <section class="hero" id="home">
+    <div class="hero__video-wrap">
+  <video autoplay muted loop playsinline>
+    <source src="hero-vid.mp4" type="video/mp4">
+  </video>
+</div>
+    <div class="hero__line-top"></div>
+    <div class="hero__line-bottom"></div>
+
+    <div class="hero__content">
+      <span class="hero__eyebrow">Maison YNG — Est. MMXXIV</span>
+      <h1 class="hero__wordmark">YNG</h1>
+      <div class="hero__rule"></div>
+      <p class="hero__tagline">Timeless Precision</p>
+    </div>
+
+    <div class="hero__scroll-cue">
+      <span>Discover</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       2. PHILOSOPHY
+  ============================================================ -->
+  <section class="philosophy" id="philosophy">
+    <div class="philosophy__inner">
+      <div class="philosophy__image-wrap">
+        <img src="im1.jfif" alt="Luxury Gentleman">
+      </div>
+
+      <div class="philosophy__text">
+        <span class="overline">Brand Philosophy</span>
+        <span class="gold-rule"></span>
+        <h2 class="philosophy__heading">
+          Objects born<br>from <em>silence</em><br>and intent.
+        </h2>
+        <p class="philosophy__body">
+          YNG was founded on a singular conviction: that true luxury is not ornamentation, but
+          restraint. Each piece is conceived in stillness — refined until nothing unnecessary
+          remains. What endures is pure.
+        </p>
+        <p class="philosophy__body">
+          Our ateliers draw from a lineage of master craftsmen whose hands know no shortcut.
+          Every surface, every movement, every edge is considered with the patience of those who
+          understand that excellence is never hurried.
+        </p>
+        <span class="label">The YNG Standard</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       3. TIMEPIECES
+  ============================================================ -->
+  <section class="timepieces" id="timepieces">
+    <div class="section-inner">
+      <header class="collection-header">
+        <span class="overline">Collection I</span>
+        <span class="gold-rule"></span>
+        <h2 class="collection-header__title">Timepieces</h2>
+        <p class="collection-header__sub">
+          Movements of extraordinary precision. Cases sculpted over hundreds of hours.
+          A watch that measures more than time.
+        </p>
+      </header>
+    </div>
+
+    <div class="watches-grid">
+      <!-- Hero watch -->
+      <div class="watches-grid__hero">
+        <img src="im2.jfif" alt="YNG Obsidian I">
+        <div class="watch-caption">
+          <span class="label">Signature Series</span>
+          <h3 class="watch-caption__name" style="font-family:var(--font-display);font-size:1.3rem;font-weight:500;">
+            YNG Obsidian I
+          </h3>
+          <p class="watch-caption__detail">Automatic · 42mm · Sapphire Crystal</p>
+        </div>
+      </div>
+
+      <!-- Right column watches -->
+      <div class="watches-grid__item">
+        <img src="im3.jfif" alt="YNG Soleil">
+        <div class="watch-caption">
+          <span class="label">Haute Horlogerie</span>
+          <h3 class="watch-caption__name" style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;">
+            YNG Soleil
+          </h3>
+          <p class="watch-caption__detail">Skeleton · 38mm · 18K Rose Gold</p>
+        </div>
+      </div>
+
+      <div class="watches-grid__item">
+        <img src="im4.jfif" alt="YNG Noir Perpetuel">
+        <div class="watch-caption">
+          <span class="label">Perpetual Edition</span>
+          <h3 class="watch-caption__name" style="font-family:var(--font-display);font-size:1.05rem;font-weight:500;">
+            YNG Noir Perpétuel
+          </h3>
+          <p class="watch-caption__detail">Perpetual Calendar · 40mm · Titanium</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       4. JEWELRY
+  ============================================================ -->
+  <section class="jewelry" id="jewelry">
+    <div class="jewelry__inner">
+      <header class="collection-header">
+        <span class="overline">Collection II</span>
+        <span class="gold-rule"></span>
+        <h2 class="collection-header__title">Fine Jewelry</h2>
+        <p class="collection-header__sub">
+          Adornment conceived as architecture. Precious metals shaped
+          by hands that regard beauty as a discipline.
+        </p>
+      </header>
+
+      <div class="jewelry__layout">
+        <!-- Left -->
+        <div class="jewelry__side jewelry__side--top">
+          <img src="im5.jfif" alt="Arc Necklace">
+          <div class="jewelry__caption">
+            <span class="label">Gold Series</span>
+            <span class="jewelry__caption-name">Arc Necklace</span>
+            <span class="jewelry__caption-sub">18K Yellow Gold · Hand-Forged</span>
+          </div>
+        </div>
+
+        <!-- Centre feature -->
+        <div class="jewelry__feature">
+          <img src="im6.jfif" alt="Meridian Chain">
+          <div class="jewelry__caption">
+            <span class="label">Signature Piece</span>
+            <span class="jewelry__caption-name">YNG Meridian Chain</span>
+            <span class="jewelry__caption-sub">Platinum · Diamond Set · Limited</span>
+          </div>
+        </div>
+
+        <!-- Right -->
+        <div class="jewelry__side jewelry__side--bottom">
+          <img src="im7.jfif" alt="Void Pendant">
+          <div class="jewelry__caption">
+            <span class="label">Sculptural</span>
+            <span class="jewelry__caption-name">Void Pendant</span>
+            <span class="jewelry__caption-sub">Blackened Silver · Geometric Form</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ============================================================
+       5. EYEWEAR
+  ============================================================ -->
+  <section class="eyewear" id="eyewear">
+    <div class="section-inner">
+      <header class="collection-header">
+        <span class="overline">Collection III</span>
+        <span class="gold-rule"></span>
+        <h2 class="collection-header__title">Eyewear</h2>
+        <p class="collection-header__sub">
+          Frames engineered with optical precision. Acetate and metal alloys
+          chosen for their character as much as their durability.
+        </p>
+      </header>
+    </div>
+
+    <div class="eyewear-strip">
+      <div class="eyewear-strip__item">
+        <img src="im8.jfif" alt="Phantom I">
+        <div class="eyewear-caption">
+          <span class="eyewear-caption__detail">Optical</span>
+          <span class="eyewear-caption__name">Phantom I</span>
+        </div>
+      </div>
+
+      <div class="eyewear-strip__item">
+        <img src="im9.jfif" alt="Dusk Frame">
+        <div class="eyewear-caption">
+          <span class="eyewear-caption__detail">Solar</span>
+          <span class="eyewear-caption__name">Dusk Frame</span>
+        </div>
+      </div>
+
+      <div class="eyewear-strip__item">
+       <img src="im10.jfif" alt="Aurum Edition">
+        <div class="eyewear-caption">
+          <span class="eyewear-caption__detail">Limited</span>
+          <span class="eyewear-caption__name">Aurum Edition</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="eyewear-editorial">
+      <img src="im11.jfif" alt="Eyewear Editorial">
+    </div>
+  </section>
+
+  <!-- ============================================================
+       6. CRAFTSMANSHIP
+  ============================================================ -->
+  <section class="craftsmanship" id="craftsmanship">
+    <div class="craft__inner">
+      <header class="collection-header" style="text-align:left;align-items:flex-start;margin-bottom:var(--space-lg);">
+        <span class="overline">The Atelier</span>
+        <span class="gold-rule"></span>
+        <h2 class="collection-header__title" style="text-align:left;">Craftsmanship</h2>
+      </header>
+
+      <div class="craft__image-wrap">
+        <img src="im12.jfif" alt="Watchmaker Workshop">
+      </div>
+
+      <div class="craft__text-row">
+        <div class="craft__pillar">
+          <span class="craft__pillar-num">I</span>
+          <span class="craft__pillar-heading" style="font-family:var(--font-display);">Materials</span>
+          <p class="craft__pillar-body">
+            Only grade-one alloys, hand-selected sapphires, and single-origin precious
+            metals pass our procurement threshold.
+          </p>
+        </div>
+        <div class="craft__pillar">
+          <span class="craft__pillar-num">II</span>
+          <span class="craft__pillar-heading" style="font-family:var(--font-display);">Precision</span>
+          <p class="craft__pillar-body">
+            Each movement is calibrated to ±2 seconds per day. Every joint is fitted
+            to tolerances measured in microns.
+          </p>
+        </div>
+        <div class="craft__pillar">
+          <span class="craft__pillar-num">III</span>
+          <span class="craft__pillar-heading" style="font-family:var(--font-display);">Time</span>
+          <p class="craft__pillar-body">
+            A single YNG timepiece requires over 400 hours of atelier work from first
+            sketch to final polish.
+          </p>
+        </div>
+        <div class="craft__pillar">
+          <span class="craft__pillar-num">IV</span>
+          <span class="craft__pillar-heading" style="font-family:var(--font-display);">Legacy</span>
+          <p class="craft__pillar-body">
+            We build for generations. Every piece carries a discrete serial mark and
+            a certificate of provenance.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider--gold section-divider"></div>
+
+  <!-- ============================================================
+     7. THE YNG GENERATION
+============================================================ -->
+<section class="legacy" id="legacy">
+  <div class="legacy__inner">
+
+    <div class="legacy__text-col">
+      <span class="overline">The YNG Generation</span>
+      <span class="gold-rule" style="margin:1rem 0;"></span>
+
+      <h2 class="legacy__heading">
+        Built for the<br>
+        next generation<br>
+        of <em>luxury.</em>
+      </h2>
+
+      <blockquote class="legacy__quote">
+        "Luxury is no longer inherited.
+        It is built by those creating the future."
+      </blockquote>
+
+      <p class="legacy__sub">
+        YNG is created for founders, creators, athletes,
+        innovators and tastemakers who move culture forward.
+
+        Our pieces are designed to reflect ambition,
+        discipline and individuality — combining timeless
+        design with modern influence.
+
+        Every watch, piece of jewelry and frame represents
+        a commitment to excellence without excess.
+      </p>
+    </div>
+
+    <div class="legacy__image-col">
+      <img src="im13.png" alt="YNG Ambassador">
+    </div>
+
+  </div>
+</section>
+
+  <!-- ============================================================
+       8. CONTACT
+  ============================================================ -->
+  <section class="contact" id="contact">
+    <div class="contact__inner">
+      <header class="contact__header">
+        <span class="overline">Private Enquiry</span>
+        <span class="gold-rule"></span>
+        <h2 class="contact__title">Begin a Conversation</h2>
+        <p class="contact__sub">
+          For bespoke commissions, private viewings, or authorised retailer enquiries,
+          our atelier team responds within 24 hours.
+        </p>
+      </header>
+
+      <form class="contact__form" action="#" method="post">
+        <div class="form__field">
+          <label class="form__label" for="f-name">Name</label>
+          <input class="form__input" type="text" id="f-name" name="name" placeholder="Your full name" autocomplete="name" />
+        </div>
+
+        <div class="form__field" style="border-right:none;">
+          <label class="form__label" for="f-email">Email</label>
+          <input class="form__input" type="email" id="f-email" name="email" placeholder="your@email.com" autocomplete="email" />
+        </div>
+
+        <div class="form__field form__field--full">
+          <label class="form__label" for="f-interest">Interest</label>
+          <input class="form__input" type="text" id="f-interest" name="interest" placeholder="Timepieces · Jewelry · Eyewear · Bespoke" />
+        </div>
+
+        <div class="form__field form__field--full" style="border-bottom:none;">
+          <label class="form__label" for="f-message">Message</label>
+          <textarea class="form__textarea" id="f-message" name="message" placeholder="Please describe your enquiry…"></textarea>
+        </div>
+
+        <div class="form__submit-row">
+          <button class="form__submit" type="submit">Send Enquiry</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer__inner">
+        <div class="footer__brand">
+          <span class="footer__logo">YNG</span>
+          <p class="footer__brand-tagline">
+            Timeless precision, refined beyond necessity.<br>
+            Objects that endure.
+          </p>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Collections</p>
+          <ul class="footer__links">
+            <li><a href="#timepieces">Timepieces</a></li>
+            <li><a href="#jewelry">Fine Jewelry</a></li>
+            <li><a href="#eyewear">Eyewear</a></li>
+            <li><a href="#craftsmanship">Craftsmanship</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Maison</p>
+          <ul class="footer__links">
+            <li><a href="#philosophy">Philosophy</a></li>
+            <li><a href="#legacy">Legacy</a></li>
+            <li><a href="#contact">Private Enquiry</a></li>
+            <li><a href="#">Authorised Retailers</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <p class="footer__col-title">Contact</p>
+          <ul class="footer__links">
+            <li><a href="mailto:atelier@yngmaison.com">atelier@yngmaison.com</a></li>
+            <li><a href="#">Geneva Atelier</a></li>
+            <li><a href="#">Dubai Boutique</a></li>
+            <li><a href="#">Tokyo Salon</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2024 YNG Maison. All rights reserved.</span>
+        <ul class="footer__legal">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Legal Notice</a></li>
+          <li><a href="#">Cookie Settings</a></li>
+        </ul>
+      </div>
+    </footer>
+  </section>
+
+</body>
+</html>
